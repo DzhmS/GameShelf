@@ -1,0 +1,63 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Game Form | GameShelf{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-7">
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+
+                <h1 class="mb-3">
+                    {% if form.instance.pk %}
+                        Edit Game
+                    {% else %}
+                        Add Game
+                    {% endif %}
+                </h1>
+
+                <p class="text-muted mb-4">
+                    Enter the game information below.
+                </p>
+
+                <form method="post"
+                      enctype="multipart/form-data"
+                      class="styled-form">
+
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    {{ form.as_p }}
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            {% if form.instance.pk %}
+                                Save Changes
+                            {% else %}
+                                Create Game
+                            {% endif %}
+                        </button>
+
+                        <a href="{% url 'game-list' %}"
+                           class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

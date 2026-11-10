@@ -1,0 +1,46 @@
+
+{% extends 'base.html' %}
+
+{% block title %}{{ platform.name }} | GameShelf{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+
+        <h1 class="card-title mb-3">
+            {{ platform.name }}
+        </h1>
+
+        <p class="card-text">
+            {{ platform.description|default:"No description." }}
+        </p>
+
+        <hr>
+
+        <div class="mt-4 d-flex gap-2 flex-wrap">
+            <a href="{% url 'game-list' %}?platform={{ platform.pk }}"
+               class="btn btn-outline-primary">
+                View Games
+            </a>
+
+            <a href="{% url 'platform-update' platform.pk %}"
+               class="btn btn-primary">
+                Edit
+            </a>
+
+            <a href="{% url 'platform-delete' platform.pk %}"
+               class="btn btn-danger">
+                Delete
+            </a>
+
+            <a href="{% url 'platform-list' %}"
+               class="btn btn-outline-secondary">
+                Back
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

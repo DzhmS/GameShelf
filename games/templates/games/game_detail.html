@@ -1,0 +1,127 @@
+
+{% extends 'base.html' %}
+
+{% block title %}{{ game.title }} | GameShelf{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-4">
+
+        <h1 class="card-title mb-3">{{ game.title }}</h1>
+
+        {% if game.image %}
+            <img src="{{ game.image.url }}"
+                 alt="{{ game.title }}"
+                 class="img-fluid rounded mb-4"
+                 style="max-height: 350px; object-fit: contain;">
+        {% endif %}
+
+        <p class="card-text">{{ game.description }}</p>
+
+        <hr>
+
+        <p>
+            <strong>Release Date:</strong>
+            {{ game.release_date|date:"F j, Y" }}
+        </p>
+
+        <p>
+            <strong>Developer:</strong>
+            {{ game.developer }}
+        </p>
+
+        <p>
+            <strong>Publisher:</strong>
+            {{ game.publisher }}
+        </p>
+
+        <h5 class="mt-4">Genres</h5>
+
+        {% for genre in game.genres.all %}
+            <a href="{% url 'game-list' %}?genre={{ genre.pk }}"
+               class="badge bg-secondary text-decoration-none">
+                {{ genre.name }}
+            </a>
+        {% empty %}
+            <p class="text-muted">No genres.</p>
+        {% endfor %}
+
+        <h5 class="mt-4">Platforms</h5>
+
+        {% for platform in game.platforms.all %}
+            <a href="{% url 'game-list' %}?platform={{ platform.pk }}"
+               class="badge bg-dark text-decoration-none">
+                {{ platform.name }}
+            </a>
+        {% empty %}
+            <p class="text-muted">No platforms.</p>
+        {% endfor %}
+
+        <div class="mt-4 d-flex gap-2 flex-wrap">
+            <a href="{% url 'game-update' game.pk %}"
+               class="btn btn-primary">
+                Edit
+            </a>
+
+            <a href="{% url 'game-delete' game.pk %}"
+               class="btn btn-danger">
+                Delete
+            </a>
+
+            <a href="{% url 'game-list' %}"
+               class="btn btn-secondary">
+                Back
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h4 mb-0">Reviews</h2>
+
+            <a href="{% url 'review-create' %}?game={{ game.pk }}"
+               class="btn btn-success">
+                Add Review
+            </a>
+        </div>
+
+        {% for review in reviews %}
+            <div class="border rounded p-3 mb-3">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="h6 mb-0">
+                        Score: {{ review.rating }}/100
+                    </h3>
+
+                    <a href="{% url 'review-detail' review.pk %}"
+                       class="btn btn-sm btn-outline-primary">
+                        View Review
+                    </a>
+                </div>
+
+                <p class="text-muted small mt-2 mb-2">
+                    {{ review.created_at|date:"F j, Y" }}
+                </p>
+
+                {% if review.comment %}
+                    <p class="mb-0">{{ review.comment }}</p>
+                {% else %}
+                    <p class="text-muted mb-0">No comment provided.</p>
+                {% endif %}
+
+            </div>
+        {% empty %}
+            <div class="alert alert-info mb-0">
+                No reviews for this game yet.
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

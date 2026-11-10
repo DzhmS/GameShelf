@@ -1,0 +1,54 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Genres | GameShelf{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Genres</h1>
+
+    <a href="{% url 'genre-create' %}" class="btn btn-success">
+        Add Genre
+    </a>
+</div>
+
+<div class="row g-4">
+    {% for genre in genres %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body d-flex flex-column">
+
+                    <h5 class="card-title">
+                        {{ genre.name }}
+                    </h5>
+
+                    <p class="card-text">
+                        {{ genre.description|default:"No description."|truncatewords:20 }}
+                    </p>
+
+                    <div class="mt-auto">
+                        <a href="{% url 'genre-detail' genre.pk %}"
+                           class="btn btn-outline-primary">
+                            View Details
+                        </a>
+
+                        <a href="{% url 'game-list' %}?genre={{ genre.pk }}"
+                           class="btn btn-outline-secondary">
+                            View Games
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                No genres found. Add your first genre to get started.
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Reviews | GameShelf{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Reviews</h1>
+
+    <a href="{% url 'review-create' %}" class="btn btn-success">
+        Add Review
+    </a>
+</div>
+
+<div class="row g-4">
+    {% for review in reviews %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body d-flex flex-column">
+
+                    <h5 class="card-title">
+                        <a href="{% url 'game-detail' review.game.pk %}"
+                           class="text-decoration-none">
+                            {{ review.game.title }}
+                        </a>
+                    </h5>
+
+                    <p class="card-text">
+                        <strong>Score:</strong>
+                        {{ review.rating }}/100
+                    </p>
+
+                    <p class="card-text text-muted small">
+                        {{ review.created_at|date:"F j, Y" }}
+                    </p>
+
+                    <p class="card-text">
+                        {{ review.comment|default:"No comment."|truncatewords:20 }}
+                    </p>
+
+                    <div class="mt-auto">
+                        <a href="{% url 'review-detail' review.pk %}"
+                           class="btn btn-outline-primary">
+                            View Details
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                No reviews found. Add your first review to get started.
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

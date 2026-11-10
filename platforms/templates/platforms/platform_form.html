@@ -1,0 +1,65 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if form.instance.pk %}
+        Edit Platform | GameShelf
+    {% else %}
+        Add Platform | GameShelf
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+
+                <h1 class="mb-3">
+                    {% if form.instance.pk %}
+                        Edit Platform
+                    {% else %}
+                        Add Platform
+                    {% endif %}
+                </h1>
+
+                <p class="text-muted mb-4">
+                    Enter the platform information below.
+                </p>
+
+                <form method="post" class="styled-form">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    {{ form.as_p }}
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            {% if form.instance.pk %}
+                                Save Changes
+                            {% else %}
+                                Create Platform
+                            {% endif %}
+                        </button>
+
+                        <a href="{% url 'platform-list' %}"
+                           class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

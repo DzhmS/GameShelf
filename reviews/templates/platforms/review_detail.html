@@ -1,0 +1,75 @@
+
+{% extends 'base.html' %}
+{% load game_filters %}
+
+{% block title %}Review Details | GameShelf{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+
+        <h1 class="card-title mb-3">
+            Review for {{ review.game.title }}
+        </h1>
+
+        <p>
+            <strong>Game:</strong>
+            <a href="{% url 'game-detail' review.game.pk %}"
+               class="text-decoration-none">
+                {{ review.game.title }}
+            </a>
+        </p>
+
+        <p>
+            <strong>Score:</strong>
+            {{ review.rating }}/100
+        </p>
+
+        <p>
+            <strong>Rating Label:</strong>
+            <span class="badge bg-primary">
+                {{ review.rating|score_label }}
+            </span>
+        </p>
+
+        <p>
+            <strong>Comment:</strong>
+        </p>
+
+        <p class="card-text">
+            {{ review.comment|default:"No comment." }}
+        </p>
+
+        <p class="text-muted small">
+            Created: {{ review.created_at|date:"F j, Y" }}
+        </p>
+
+        <hr>
+
+        <div class="mt-4 d-flex gap-2 flex-wrap">
+            <a href="{% url 'review-update' review.pk %}"
+               class="btn btn-primary">
+                Edit
+            </a>
+
+            <a href="{% url 'review-delete' review.pk %}"
+               class="btn btn-danger">
+                Delete
+            </a>
+
+            <a href="{% url 'game-detail' review.game.pk %}"
+               class="btn btn-outline-secondary">
+                Back to Game
+            </a>
+
+            <a href="{% url 'review-list' %}"
+               class="btn btn-secondary">
+                All Reviews
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
