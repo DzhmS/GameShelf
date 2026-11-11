@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import GameForm, GenreForm
 from .models import Game, Genre
 from platforms.models import Platform
+from django.db.models.functions import Lower
 
 
 def game_list(request):
@@ -30,7 +31,14 @@ def game_list(request):
     if platform_id:
         games = games.filter(platforms__pk=platform_id)
 
-    games = games.order_by(sort)
+    if sort == 'title':
+        games = games.order_by(Lower('title'))
+    elif sort == '-title':
+        games = games.order_by(Lower('title').desc())
+    elif sort == 'release_date':
+        games = games.order_by('release_date')
+    else:
+        games = games.order_by('-release_date')
 
     context = {
         'games': games,
